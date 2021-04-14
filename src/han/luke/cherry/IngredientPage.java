@@ -1,6 +1,9 @@
 package han.luke.cherry;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -16,49 +19,40 @@ public class IngredientPage extends JFrame {
     private static final long serialVersionUID = -711163588504124217L;
 
     public IngredientPage(String title, int x, int y, int width, int height) {
+        init(title, x, y, width, height);
+    }
+
+    private void init(String title, int x, int y, int width, int height){
         super.setTitle(title);
+        gui(x, y, width, height);
+    }
+
+    // GUI 생성
+    private void gui(int x, int y, int width, int height){
         setBounds(x, y, width, height);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        checkProgram();
+        Container contentPane = this.getContentPane();
+        JPanel pane = new JPanel();
+        JButton btn = new JButton("Button");
+
+        btn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                setExitBtn(getDefaultCloseOperation());
+            }
+        });
+
+        pane.add(btn);
+        contentPane.add(pane);
 
         setVisible(true);
     }
-    // 프로그램 설치 유무 확인
-    // GUI 생성
-    // loading
 
-    /**
-     * Author: LukeHan <LukeHan1128@gmail.com>
-     * Date:   SUN Apr 11 22:00:00 2021 +0900
-     */
-    public boolean checkProgram(){
-        boolean check = false;
-        String line;
-        String os = System.getProperty("os.name").toLowerCase();
-
-        if(!os.contains("win")){
-            System.out.println("[SYSTEM] This Program Support only Windows");
-            return check;
-        }
-
-        try {
-            // git --version
-            BufferedReader br = new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec("cmd git --version").getInputStream(), "EUC-KR"));
-
-            System.out.println("----------");
-            while ((line = br.readLine()) != null) {
-                System.out.println(line);
-            }
-            System.out.println("----------");
-
-            // tortoisegit
-
-        }catch (UnsupportedEncodingException e){
-            e.printStackTrace();
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-        return check;
+    private void setExitBtn(int check){
+        if(check == JFrame.EXIT_ON_CLOSE) setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        else setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
+
+    // loading
 }
